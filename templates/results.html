@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles2.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>File Processing Results</h1>
+        <h2>Download Split Files</h2>
+        <ul>
+            {% for file in files %}
+                <li><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
+            {% endfor %}
+        </ul>
+        <h2>Protocol Hierarchy Analysis</h2>
+        <div class="graph-controls">
+            <button onclick="showGraph('bar')">Bar Graph</button>
+            <button onclick="showGraph('pie')">Pie Chart</button>
+        </div>
+        <div id="graph-container"></div>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script>
+        const hierarchyData = {{ hierarchy_data|tojson }};
+        showGraph('bar');
+    </script>
+</body>
+</html>

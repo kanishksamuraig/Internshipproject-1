@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload .pcap/.pcapng File</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Upload .pcap/.pcapng File</h1>
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+            <label for="fileInput" class="file-label">
+                <span>Select a file (less than 50 MB)</span>
+                <input type="file" id="fileInput" name="file" accept=".pcap,.pcapng" required>
+            </label>
+            <div id="fileInfo" class="file-info"></div>
+            <div>
+                <label for="segments">Number of segments:</label>
+                <input type="number" id="segments" name="segments" min="1" required>
+            </div>
+            <button type="submit" class="upload-button" disabled>Upload</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const fileInfo = document.getElementById('fileInfo');
+            const uploadButton = document.querySelector('.upload-button');
+            
+            if (file) {
+                if ((file.size / 1024 / 1024) < 50) {
+                    fileInfo.textContent = `File: ${file.name}, Size: ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+                    uploadButton.disabled = false;
+                } else {
+                    fileInfo.textContent = 'The file size must be less than 50 MB.';
+                    uploadButton.disabled = true;
+                }
+            } else {
+                fileInfo.textContent = '';
+                uploadButton.disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>
